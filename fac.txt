@@ -1,0 +1,37 @@
+define i32 @main() #0 {
+  %1 = alloca i32, align 4
+  %2 = alloca i32, align 4
+  %3 = alloca i32, align 4
+  store i32 0, i32* %1, align 4  ；返回值0
+  store i32 1, i32* %2, align 4  ；f
+  store i32 2, i32* %3, align 4  ;i
+  %4 = alloca i32, align 4       ;n
+  %5 = call i32 (i8*, ...) @scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @.str, i32 0, i32 0), i32* %4) ;输入n
+  br label %6
+
+6:                                                ; preds = %0，%10
+  %7 = load i32, i32* %3, align 4  ;加载i,n的值
+  %8 = load i32, i32* %4, align 4
+  %9 = icmp sle i32 %7, %8         ;小于等于比较
+   br i1 %9, label %10, label %15   ;如果i<=n就跳转到基本块10，否则跳转到基本块15
+
+10:                                                ; preds = %6
+  %11 = load i32, i32* %2, align 4  ;加载f,i的值
+  %12 = load i32, i32* %3, align 4
+  %13 = mul nsw i32 %11, %12        ;f*i
+  store i32 %13, i32* %2, align 4   ;乘积存回f
+   %14 = add nsw i32 %12, 1          ;i+1
+  store i32 %14, i32* %3, align 4   ;加后存回i
+   br label %6, !llvm.loop !10       ;跳转到块6，进行判断
+
+
+15:                                               ; preds = %6
+  %16 = load i32, i32* %4, align 4   ;加载f
+  %17 = call i32 @printf(i8* getelementptr inbounds ([5 x i8], [5 x i8]* @.str, i32 0, i32 0), i32 %17)   ;输出阶乘结果f
+  ret i32 0
+}
+
+;函数
+declare i32 @printf(i8*, ...) #1
+
+declare i32 @scanf(i8*, ...) #1
